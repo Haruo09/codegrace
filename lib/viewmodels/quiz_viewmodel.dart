@@ -98,7 +98,7 @@ class QuizViewModel extends ChangeNotifier {
     // Questão Difícil (30 pts)
     QuizQuestion(
       id: 'q_hard_1',
-      questionText: 'Analise o algoritmo: a = 10; b = 20; temp = a; a = b; b = temp; O que essa sequência realizou?',
+      questionText: 'Analise o algoritmo:\n a = 10; b = 20; \ntemp = a;\n a = b;\n b = temp;\n O que essa sequência realizou?',
       options: [
         'Somou o valor de a e b',
         'Inverteu/trocou os valores armazenados entre as variáveis a e b',
@@ -162,7 +162,7 @@ class QuizViewModel extends ChangeNotifier {
       _isAnswered = false;
       _isCorrect = false;
       _adaDialogMessage =
-          'Próxima questão (${currentQuestion.difficulty.name.toUpperCase()} - ${currentQuestion.points} pts). Foco e atenção!';
+          'Próxima questão. Foco e atenção!';
     } else {
       _isLessonCompleted = true;
       _adaDialogMessage =

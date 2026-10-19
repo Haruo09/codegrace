@@ -12,7 +12,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
-
+  
   final List<Widget> _tabs = [
     const MapTrailTab(),
     const LeaderboardTab(),
@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: IndexedStack(index: _currentIndex, children: _tabs),
       bottomNavigationBar: Container(
@@ -289,42 +290,136 @@ class LeaderboardTab extends StatelessWidget {
               style: TextStyle(
                 color: CatppuccinColors.yellow,
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: 30,
               ),
             ),
             title: Text(
-              'Grace H.',
+              'Grace Hopper',
               style: TextStyle(
                 color: CatppuccinColors.text,
                 fontWeight: FontWeight.bold,
+                fontSize: 23,
               ),
             ),
             subtitle: Text(
-              '120 pts',
-              style: TextStyle(color: CatppuccinColors.subtext0),
+              '1200 pts',
+              style: TextStyle(color: CatppuccinColors.subtext0, fontSize: 18),
             ),
             trailing: Icon(Icons.emoji_events, color: CatppuccinColors.yellow),
           ),
-          Divider(color: CatppuccinColors.surface1),
+          Divider(color: CatppuccinColors.surface1, thickness: 4),
           ListTile(
             leading: Text(
               '2º',
               style: TextStyle(
-                color: CatppuccinColors.subtext0,
+                color: Color.fromARGB(255, 234, 234, 234),
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: 30,
               ),
             ),
             title: Text(
-              'Ada L.',
+              'Ada Lovelace',
               style: TextStyle(
                 color: CatppuccinColors.text,
                 fontWeight: FontWeight.bold,
+                fontSize: 23,
               ),
             ),
             subtitle: Text(
-              '80 pts',
-              style: TextStyle(color: CatppuccinColors.subtext0),
+              '800 pts',
+              style: TextStyle(color: CatppuccinColors.subtext0, fontSize: 18),
+            ),
+          ),
+          Divider(color: CatppuccinColors.surface1, thickness: 4),
+          ListTile(
+            leading: Text(
+              '3º',
+              style: TextStyle(
+                color: Color.fromARGB(255, 173, 104, 0),
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+              ),
+            ),
+            title: Text(
+              'Margaret Hamilton',
+              style: TextStyle(
+                color: CatppuccinColors.text,
+                fontWeight: FontWeight.bold,
+                fontSize: 23,
+              ),
+            ),
+            subtitle: Text(
+              '600 pts',
+              style: TextStyle(color: CatppuccinColors.subtext0, fontSize: 18),
+            ),
+          ),
+          Divider(color: CatppuccinColors.surface1, thickness: 4),
+          ListTile(
+            leading: Text(
+              '4º',
+              style: TextStyle(
+                color: Color.fromARGB(255, 114, 113, 113),
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+              ),
+            ),
+            title: Text(
+              'Carol Shaw',
+              style: TextStyle(
+                color: CatppuccinColors.text,
+                fontWeight: FontWeight.bold,
+                fontSize: 23,
+              ),
+            ),
+            subtitle: Text(
+              '200 pts',
+              style: TextStyle(color: CatppuccinColors.subtext0, fontSize: 18),
+            ),
+          ),
+          Divider(color: CatppuccinColors.surface1, thickness: 4),
+          ListTile(
+            leading: Text(
+              '5º',
+              style: TextStyle(
+                color: Color.fromARGB(255, 114, 113, 113),
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+              ),
+            ),
+            title: Text(
+              'Mary Kenneth Keller',
+              style: TextStyle(
+                color: CatppuccinColors.text,
+                fontWeight: FontWeight.bold,
+                fontSize: 23,
+              ),
+            ),
+            subtitle: Text(
+              '100 pts',
+              style: TextStyle(color: CatppuccinColors.subtext0, fontSize: 18),
+            ),
+          ),
+          Divider(color: CatppuccinColors.surface1, thickness: 4),
+          ListTile(
+            leading: Text(
+              '6º',
+              style: TextStyle(
+                color: Color.fromARGB(255, 114, 113, 113),
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+              ),
+            ),
+            title: Text(
+              'XXXXXX',
+              style: TextStyle(
+                color: CatppuccinColors.text,
+                fontWeight: FontWeight.bold,
+                fontSize: 23,
+              ),
+            ),
+            subtitle: Text(
+              '50 pts',
+              style: TextStyle(color: CatppuccinColors.subtext0, fontSize: 18),
             ),
           ),
         ],
@@ -357,19 +452,29 @@ class ProfileTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle style =  ElevatedButton.styleFrom(
+      backgroundColor:  CatppuccinColors.mauve,
+      minimumSize: const Size(double.infinity, 50),
+      textStyle:  TextStyle(color: CatppuccinColors.text,
+                              fontWeight: FontWeight.bold,
+                               fontSize: 20),);
     return Scaffold(
       appBar: AppBar(title: const Text('Meu Perfil')),
-      body: const Padding(
-        padding: EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        //padding: EdgeInsets.all(16),
         child: Column(
-          children: [
-            CircleAvatar(
+          children:[
+            const Align(
+            alignment: Alignment.center,
+            ),
+            const CircleAvatar(
               radius: 40,
               backgroundColor: CatppuccinColors.mauve,
               child: Icon(Icons.person, size: 40, color: CatppuccinColors.base),
             ),
-            SizedBox(height: 12),
-            Text(
+            const SizedBox(height: 12),
+            const Text(
               'Estudante CodeGrace',
               style: TextStyle(
                 color: CatppuccinColors.text,
@@ -377,10 +482,29 @@ class ProfileTab extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(
+            const Text(
               'BCC - IFSP Salto',
               style: TextStyle(color: CatppuccinColors.subtext0),
             ),
+             const SizedBox(height: 30),
+
+            ElevatedButton(
+            style: style,
+            onPressed: (){},
+            child:  const Text('Configurações de Conta'),
+          ),
+          const SizedBox(height: 15),
+          ElevatedButton(
+            style: style,
+            onPressed: (){},
+            child:  const Text('Configurações de Som'),
+          ),
+          const SizedBox(height: 15),
+          ElevatedButton(
+            style: style,
+            onPressed: (){},
+            child:  const Text('Configurações de Notificações'),
+          ),
           ],
         ),
       ),
