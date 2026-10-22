@@ -12,7 +12,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
-  
+
   final List<Widget> _tabs = [
     const MapTrailTab(),
     const LeaderboardTab(),
@@ -22,7 +22,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       body: IndexedStack(index: _currentIndex, children: _tabs),
       bottomNavigationBar: Container(
@@ -399,29 +398,6 @@ class LeaderboardTab extends StatelessWidget {
               style: TextStyle(color: CatppuccinColors.subtext0, fontSize: 18),
             ),
           ),
-          Divider(color: CatppuccinColors.surface1, thickness: 4),
-          ListTile(
-            leading: Text(
-              '6º',
-              style: TextStyle(
-                color: Color.fromARGB(255, 114, 113, 113),
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-              ),
-            ),
-            title: Text(
-              'XXXXXX',
-              style: TextStyle(
-                color: CatppuccinColors.text,
-                fontWeight: FontWeight.bold,
-                fontSize: 23,
-              ),
-            ),
-            subtitle: Text(
-              '50 pts',
-              style: TextStyle(color: CatppuccinColors.subtext0, fontSize: 18),
-            ),
-          ),
         ],
       ),
     );
@@ -452,22 +428,23 @@ class ProfileTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ButtonStyle style =  ElevatedButton.styleFrom(
-      backgroundColor:  CatppuccinColors.mauve,
+    final ButtonStyle style = ElevatedButton.styleFrom(
+      backgroundColor: CatppuccinColors.mauve,
       minimumSize: const Size(double.infinity, 50),
-      textStyle:  TextStyle(color: CatppuccinColors.text,
-                              fontWeight: FontWeight.bold,
-                               fontSize: 20),);
+      textStyle: TextStyle(
+        color: CatppuccinColors.text,
+        fontWeight: FontWeight.bold,
+        fontSize: 20,
+      ),
+    );
     return Scaffold(
       appBar: AppBar(title: const Text('Meu Perfil')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         //padding: EdgeInsets.all(16),
         child: Column(
-          children:[
-            const Align(
-            alignment: Alignment.center,
-            ),
+          children: [
+            const Align(alignment: Alignment.center),
             const CircleAvatar(
               radius: 40,
               backgroundColor: CatppuccinColors.mauve,
@@ -486,25 +463,25 @@ class ProfileTab extends StatelessWidget {
               'BCC - IFSP Salto',
               style: TextStyle(color: CatppuccinColors.subtext0),
             ),
-             const SizedBox(height: 30),
+            const SizedBox(height: 30),
 
             ElevatedButton(
-            style: style,
-            onPressed: (){},
-            child:  const Text('Configurações de Conta'),
-          ),
-          const SizedBox(height: 15),
-          ElevatedButton(
-            style: style,
-            onPressed: (){},
-            child:  const Text('Configurações de Som'),
-          ),
-          const SizedBox(height: 15),
-          ElevatedButton(
-            style: style,
-            onPressed: (){},
-            child:  const Text('Configurações de Notificações'),
-          ),
+              style: style,
+              onPressed: () {},
+              child: const Text('Configurações de Conta'),
+            ),
+            const SizedBox(height: 15),
+            ElevatedButton(
+              style: style,
+              onPressed: () {},
+              child: const Text('Configurações de Som'),
+            ),
+            const SizedBox(height: 15),
+            ElevatedButton(
+              style: style,
+              onPressed: () {},
+              child: const Text('Configurações de Notificações'),
+            ),
           ],
         ),
       ),
