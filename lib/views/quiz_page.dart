@@ -236,14 +236,19 @@ class QuizPage extends StatelessWidget {
               width: 56,
               height: 56,
               decoration: BoxDecoration(
-                color: CatppuccinColors.lavender.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
                 border: Border.all(color: CatppuccinColors.lavender, width: 2),
               ),
-              child: const Icon(
-                Icons.face_3,
-                color: CatppuccinColors.lavender,
-                size: 32,
+              child: ClipOval(
+                child: Image.asset(
+                  'assets/images/ada-icon.png',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => const Icon(
+                    Icons.face_3,
+                    color: CatppuccinColors.lavender,
+                    size: 32,
+                  ),
+                ),
               ),
             ),
             const SizedBox(width: 12),
@@ -413,10 +418,16 @@ class QuizPage extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(color: CatppuccinColors.mauve, width: 3),
               ),
-              child: const Icon(
-                Icons.face_3,
-                color: CatppuccinColors.mauve,
-                size: 72,
+              child: ClipOval(
+                child: Image.asset(
+                  'assets/images/ada-icon.png',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => const Icon(
+                    Icons.face_3,
+                    color: CatppuccinColors.mauve,
+                    size: 72,
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 24),
