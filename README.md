@@ -101,7 +101,7 @@ lib/
 
 1. Clone o repositorio do projeto:
    ```bash
-   git clone <URL_DO_REPOSITORIO>
+   git clone https://github.com/Haruo09/codegrace.git
    cd codegrace
    ```
 
