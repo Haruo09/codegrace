@@ -161,8 +161,7 @@ class QuizViewModel extends ChangeNotifier {
       _selectedOptionIndex = null;
       _isAnswered = false;
       _isCorrect = false;
-      _adaDialogMessage =
-          'Próxima questão. Foco e atenção!';
+      _adaDialogMessage = 'Próxima questão. Foco e atenção!';
     } else {
       _isLessonCompleted = true;
       _adaDialogMessage =
