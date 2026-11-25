@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/quiz_question.dart';
 import '../theme/catppuccin_theme.dart';
 import '../viewmodels/quiz_viewmodel.dart';
-import '../models/quiz_question.dart';
+import 'widgets/ada_avatar_card.dart';
+import 'widgets/quiz_feedback_panel.dart';
 
 class QuizPage extends StatelessWidget {
   const QuizPage({super.key});
@@ -60,7 +62,7 @@ class QuizPage extends StatelessWidget {
             ],
           ),
           body: SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -80,8 +82,8 @@ class QuizPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
 
-                // Card do Avatar da Ada Lovelace (Toon)
-                _buildAdaAvatarCard(viewModel.adaDialogMessage),
+                // Card do Avatar da Ada Lovelace
+                AdaAvatarCard(message: viewModel.adaDialogMessage),
                 const SizedBox(height: 16),
 
                 // Badge de Dificuldade e Pontos
@@ -124,156 +126,16 @@ class QuizPage extends StatelessWidget {
                   (index) =>
                       _buildOptionCard(context, viewModel, question, index),
                 ),
-
-                const SizedBox(height: 16),
-
-                // Card de Explicação após responder
-                if (viewModel.isAnswered)
-                  Card(
-                    color: viewModel.isCorrect
-                        ? CatppuccinColors.green.withValues(alpha: 0.15)
-                        : CatppuccinColors.red.withValues(alpha: 0.15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      side: BorderSide(
-                        color: viewModel.isCorrect
-                            ? CatppuccinColors.green
-                            : CatppuccinColors.red,
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                viewModel.isCorrect
-                                    ? Icons.check_circle
-                                    : Icons.cancel,
-                                color: viewModel.isCorrect
-                                    ? CatppuccinColors.green
-                                    : CatppuccinColors.red,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                viewModel.isCorrect ? 'Correto!' : 'Incorreto!',
-                                style: TextStyle(
-                                  color: viewModel.isCorrect
-                                      ? CatppuccinColors.green
-                                      : CatppuccinColors.red,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            question.explanation,
-                            style: const TextStyle(
-                              color: CatppuccinColors.text,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
               ],
             ),
           ),
-          bottomNavigationBar: Container(
-            padding: const EdgeInsets.all(16),
-            color: CatppuccinColors.mantle,
-            child: ElevatedButton(
-              onPressed: viewModel.selectedOptionIndex == null
-                  ? null
-                  : () {
-                      if (!viewModel.isAnswered) {
-                        viewModel.checkAnswer();
-                      } else {
-                        viewModel.nextQuestion();
-                      }
-                    },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: viewModel.isAnswered
-                    ? (viewModel.isCorrect
-                          ? CatppuccinColors.green
-                          : CatppuccinColors.mauve)
-                    : CatppuccinColors.mauve,
-              ),
-              child: Text(
-                !viewModel.isAnswered
-                    ? 'Checar Resposta'
-                    : (viewModel.currentQuestionIndex <
-                              viewModel.totalQuestions - 1
-                          ? 'Próxima Questão'
-                          : 'Ver Resultado'),
-                style: const TextStyle(
-                  color: CatppuccinColors.base,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            ),
+          // Painel Inferior Fixo estilo Duolingo
+          bottomNavigationBar: QuizFeedbackPanel(
+            viewModel: viewModel,
+            question: question,
           ),
         );
       },
-    );
-  }
-
-  // Card do Avatar Toon da Ada Lovelace
-  Widget _buildAdaAvatarCard(String message) {
-    return Card(
-      color: CatppuccinColors.surface0,
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Row(
-          children: [
-            // Avatar Ilustrado / Ícone da Ada
-            Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: CatppuccinColors.lavender, width: 2),
-              ),
-              child: ClipOval(
-                child: Image.asset(
-                  'assets/images/ada-icon.png',
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => const Icon(
-                    Icons.face_3,
-                    color: CatppuccinColors.lavender,
-                    size: 32,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(width: 12),
-            // Balão de fala
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: CatppuccinColors.mantle,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: CatppuccinColors.surface1),
-                ),
-                child: Text(
-                  message,
-                  style: const TextStyle(
-                    color: CatppuccinColors.text,
-                    fontSize: 13,
-                    height: 1.3,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/catppuccin_theme.dart';
 import 'quiz_page.dart';
+import 'widgets/trail_node.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,11 +14,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
-  final List<Widget> _tabs = [
-    const MapTrailTab(),
-    const LeaderboardTab(),
-    const FriendsTab(),
-    const ProfileTab(),
+  final List<Widget> _tabs = const [
+    MapTrailTab(),
+    LeaderboardTab(),
+    FriendsTab(),
+    ProfileTab(),
   ];
 
   @override
@@ -30,42 +31,50 @@ class _HomePageState extends State<HomePage> {
             top: BorderSide(color: CatppuccinColors.surface1, width: 1),
           ),
         ),
-        child: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) => setState(() => _currentIndex = index),
-          backgroundColor: CatppuccinColors.mantle,
-          selectedItemColor: CatppuccinColors.mauve,
-          unselectedItemColor: CatppuccinColors.subtext0,
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.map_outlined),
-              activeIcon: Icon(Icons.map),
-              label: 'Fases',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.leaderboard_outlined),
-              activeIcon: Icon(Icons.leaderboard),
-              label: 'Placar',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.people_alt_outlined),
-              activeIcon: Icon(Icons.people_alt),
-              label: 'Amigos',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
-              activeIcon: Icon(Icons.person),
-              label: 'Perfil',
-            ),
-          ],
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            splashFactory: NoSplash.splashFactory,
+          ),
+          child: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            onTap: (index) => setState(() => _currentIndex = index),
+            backgroundColor: CatppuccinColors.mantle,
+            selectedItemColor: CatppuccinColors.mauve,
+            unselectedItemColor: CatppuccinColors.subtext0,
+            type: BottomNavigationBarType.fixed,
+            enableFeedback: false,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.map_outlined),
+                activeIcon: Icon(Icons.map),
+                label: 'Fases',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.leaderboard_outlined),
+                activeIcon: Icon(Icons.leaderboard),
+                label: 'Placar',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.people_alt_outlined),
+                activeIcon: Icon(Icons.people_alt),
+                label: 'Amigos',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person_outline),
+                activeIcon: Icon(Icons.person),
+                label: 'Perfil',
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-// Aba 1: Trilha do Mapa de Fases (Inspirado no Protótipo)
+// Aba 1: Trilha do Mapa de Fases
 class MapTrailTab extends StatelessWidget {
   const MapTrailTab({super.key});
 
@@ -89,9 +98,9 @@ class MapTrailTab extends StatelessWidget {
         child: Column(
           children: [
             // Header do Módulo
-            Card(
+            const Card(
               color: CatppuccinColors.surface0,
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Row(
                   children: [
@@ -123,8 +132,7 @@ class MapTrailTab extends StatelessWidget {
             const SizedBox(height: 32),
 
             // Nó 1 (Disponível - Ada Lovelace)
-            _buildTrailNode(
-              context: context,
+            TrailNode(
               levelNumber: 1,
               title: 'Ada Lovelace & Lógica',
               stars: 3,
@@ -141,8 +149,7 @@ class MapTrailTab extends StatelessWidget {
             const SizedBox(height: 32),
 
             // Nó 2 (Bloqueado)
-            _buildTrailNode(
-              context: context,
+            const TrailNode(
               levelNumber: 2,
               title: 'Grace Hopper & Compiladores',
               stars: 0,
@@ -154,8 +161,7 @@ class MapTrailTab extends StatelessWidget {
             const SizedBox(height: 32),
 
             // Nó 3 (Bloqueado)
-            _buildTrailNode(
-              context: context,
+            const TrailNode(
               levelNumber: 3,
               title: 'Estruturas Condicionais em C',
               stars: 0,
@@ -168,113 +174,15 @@ class MapTrailTab extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildTrailNode({
-    required BuildContext context,
-    required int levelNumber,
-    required String title,
-    required int stars,
-    required bool isUnlocked,
-    required bool isCompleted,
-    required VoidCallback? onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: isUnlocked
-                      ? CatppuccinColors.mauve
-                      : CatppuccinColors.surface0,
-                  border: Border.all(
-                    color: isUnlocked
-                        ? CatppuccinColors.lavender
-                        : CatppuccinColors.surface1,
-                    width: 3,
-                  ),
-                  boxShadow: isUnlocked
-                      ? [
-                          BoxShadow(
-                            color: CatppuccinColors.mauve.withValues(
-                              alpha: 0.4,
-                            ),
-                            blurRadius: 12,
-                            spreadRadius: 2,
-                          ),
-                        ]
-                      : [],
-                ),
-                child: Icon(
-                  isUnlocked ? Icons.play_arrow : Icons.lock,
-                  color: isUnlocked
-                      ? CatppuccinColors.base
-                      : CatppuccinColors.subtext0,
-                  size: 36,
-                ),
-              ),
-              if (isUnlocked)
-                Positioned(
-                  bottom: -4,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 2,
-                    ),
-                    decoration: BoxDecoration(
-                      color: CatppuccinColors.yellow,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      'FASE $levelNumber',
-                      style: const TextStyle(
-                        color: CatppuccinColors.base,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 10,
-                      ),
-                    ),
-                  ),
-                ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            title,
-            style: TextStyle(
-              color: isUnlocked
-                  ? CatppuccinColors.text
-                  : CatppuccinColors.subtext0,
-              fontWeight: FontWeight.bold,
-              fontSize: 15,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(
-              3,
-              (i) => Icon(
-                i < stars ? Icons.star : Icons.star_border,
-                color: CatppuccinColors.yellow,
-                size: 18,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 // Aba 2: Placar / Leaderboard
 class LeaderboardTab extends StatelessWidget {
   const LeaderboardTab({super.key});
+
+  static const Color silverColor = Color(0xFFE6E9EF);
+  static const Color bronzeColor = Color(0xFFD28956);
+  static const Color mutedRankColor = Color(0xFF74798E);
 
   @override
   Widget build(BuildContext context) {
@@ -306,12 +214,12 @@ class LeaderboardTab extends StatelessWidget {
             ),
             trailing: Icon(Icons.emoji_events, color: CatppuccinColors.yellow),
           ),
-          Divider(color: CatppuccinColors.surface1, thickness: 4),
+          Divider(color: CatppuccinColors.surface1, thickness: 2),
           ListTile(
             leading: Text(
               '2º',
               style: TextStyle(
-                color: Color.fromARGB(255, 234, 234, 234),
+                color: silverColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 30,
               ),
@@ -329,12 +237,12 @@ class LeaderboardTab extends StatelessWidget {
               style: TextStyle(color: CatppuccinColors.subtext0, fontSize: 18),
             ),
           ),
-          Divider(color: CatppuccinColors.surface1, thickness: 4),
+          Divider(color: CatppuccinColors.surface1, thickness: 2),
           ListTile(
             leading: Text(
               '3º',
               style: TextStyle(
-                color: Color.fromARGB(255, 173, 104, 0),
+                color: bronzeColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 30,
               ),
@@ -352,12 +260,12 @@ class LeaderboardTab extends StatelessWidget {
               style: TextStyle(color: CatppuccinColors.subtext0, fontSize: 18),
             ),
           ),
-          Divider(color: CatppuccinColors.surface1, thickness: 4),
+          Divider(color: CatppuccinColors.surface1, thickness: 2),
           ListTile(
             leading: Text(
               '4º',
               style: TextStyle(
-                color: Color.fromARGB(255, 114, 113, 113),
+                color: mutedRankColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 30,
               ),
@@ -375,12 +283,12 @@ class LeaderboardTab extends StatelessWidget {
               style: TextStyle(color: CatppuccinColors.subtext0, fontSize: 18),
             ),
           ),
-          Divider(color: CatppuccinColors.surface1, thickness: 4),
+          Divider(color: CatppuccinColors.surface1, thickness: 2),
           ListTile(
             leading: Text(
               '5º',
               style: TextStyle(
-                color: Color.fromARGB(255, 114, 113, 113),
+                color: mutedRankColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 30,
               ),
@@ -428,23 +336,22 @@ class ProfileTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ButtonStyle style = ElevatedButton.styleFrom(
+    final ButtonStyle buttonStyle = ElevatedButton.styleFrom(
       backgroundColor: CatppuccinColors.mauve,
       minimumSize: const Size(double.infinity, 50),
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         color: CatppuccinColors.text,
         fontWeight: FontWeight.bold,
-        fontSize: 20,
+        fontSize: 18,
       ),
     );
+
     return Scaffold(
       appBar: AppBar(title: const Text('Meu Perfil')),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        //padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            const Align(alignment: Alignment.center),
             const CircleAvatar(
               radius: 40,
               backgroundColor: CatppuccinColors.mauve,
@@ -466,19 +373,19 @@ class ProfileTab extends StatelessWidget {
             const SizedBox(height: 30),
 
             ElevatedButton(
-              style: style,
+              style: buttonStyle,
               onPressed: () {},
               child: const Text('Configurações de Conta'),
             ),
             const SizedBox(height: 15),
             ElevatedButton(
-              style: style,
+              style: buttonStyle,
               onPressed: () {},
               child: const Text('Configurações de Som'),
             ),
             const SizedBox(height: 15),
             ElevatedButton(
-              style: style,
+              style: buttonStyle,
               onPressed: () {},
               child: const Text('Configurações de Notificações'),
             ),
