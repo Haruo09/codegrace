@@ -22,6 +22,9 @@ class CatppuccinTheme {
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: CatppuccinColors.base,
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      splashFactory: NoSplash.splashFactory,
       colorScheme: const ColorScheme.dark(
         primary: CatppuccinColors.mauve,
         secondary: CatppuccinColors.lavender,
@@ -31,6 +34,19 @@ class CatppuccinTheme {
         onSecondary: CatppuccinColors.base,
         onSurface: CatppuccinColors.text,
         error: CatppuccinColors.red,
+      ),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: CatppuccinColors.mantle,
+        selectedItemColor: CatppuccinColors.mauve,
+        unselectedItemColor: CatppuccinColors.subtext0,
+        type: BottomNavigationBarType.fixed,
+        elevation: 0,
+        enableFeedback: false,
+      ),
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: CatppuccinColors.mantle,
+        indicatorColor: Colors.transparent,
+        overlayColor: WidgetStateProperty.all(Colors.transparent),
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: CatppuccinColors.mantle,
