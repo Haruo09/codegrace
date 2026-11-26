@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/quiz_question.dart';
+import '../models/questao_model.dart';
 import '../theme/catppuccin_theme.dart';
 import '../viewmodels/quiz_viewmodel.dart';
 import 'widgets/ada_avatar_card.dart';
@@ -14,6 +14,24 @@ class QuizPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<QuizViewModel>(
       builder: (context, viewModel, child) {
+        // ── Estado de carregamento ─────────────────────────────────────────
+        if (viewModel.isLoading) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        if (viewModel.errorMessage != null) {
+          return Scaffold(
+            body: Center(
+              child: Text(
+                viewModel.errorMessage!,
+                style: const TextStyle(color: CatppuccinColors.red),
+              ),
+            ),
+          );
+        }
+
         if (viewModel.currentStepIndex == 0) {
           return _buildAdaIntroView(context, viewModel);
         }
@@ -23,11 +41,17 @@ class QuizPage extends StatelessWidget {
         }
 
         final question = viewModel.currentQuestion;
+        if (question == null) {
+          return const Scaffold(
+            body: Center(child: Text('Nenhuma questão disponível.')),
+          );
+        }
 
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              'Lição: Lógica com Ada (${viewModel.currentQuestionIndex + 1}/${viewModel.totalQuestions})',
+              'Lição: Lógica com Ada '
+              '(${viewModel.currentQuestionIndex + 1}/${viewModel.totalQuestions})',
             ),
             actions: [
               Container(
@@ -89,11 +113,11 @@ class QuizPage extends StatelessWidget {
                 // Badge de Dificuldade e Pontos
                 Row(
                   children: [
-                    _buildDifficultyBadge(question.difficulty),
+                    _buildDifficultyBadge(viewModel.currentDifficulty),
                     const Spacer(),
-                    if (!question.isTutorial)
+                    if (!viewModel.currentIsTutorial)
                       Text(
-                        'Valor: ${question.points} pts',
+                        'Valor: ${viewModel.currentPoints} pts',
                         style: const TextStyle(
                           color: CatppuccinColors.subtext0,
                           fontWeight: FontWeight.w600,
@@ -108,7 +132,7 @@ class QuizPage extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      question.questionText,
+                      question.enunciado,
                       style: const TextStyle(
                         color: CatppuccinColors.text,
                         fontSize: 18,
@@ -122,7 +146,7 @@ class QuizPage extends StatelessWidget {
 
                 // Opções de Resposta
                 ...List.generate(
-                  question.options.length,
+                  question.alternativas.length,
                   (index) =>
                       _buildOptionCard(context, viewModel, question, index),
                 ),
@@ -139,15 +163,14 @@ class QuizPage extends StatelessWidget {
     );
   }
 
-  // Card de Opção de Resposta
   Widget _buildOptionCard(
     BuildContext context,
     QuizViewModel viewModel,
-    QuizQuestion question,
+    QuestaoModel question,
     int index,
   ) {
     final isSelected = viewModel.selectedOptionIndex == index;
-    final isCorrectOption = index == question.correctOptionIndex;
+    final isCorrectOption = index == question.altCerta;
 
     Color backgroundColor = CatppuccinColors.surface0;
     Color borderColor = CatppuccinColors.surface1;
@@ -204,7 +227,7 @@ class QuizPage extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  question.options[index],
+                  question.alternativas[index],
                   style: TextStyle(
                     color: textColor,
                     fontSize: 15,
@@ -221,7 +244,6 @@ class QuizPage extends StatelessWidget {
     );
   }
 
-  // Badge de Dificuldade
   Widget _buildDifficultyBadge(QuestionDifficulty difficulty) {
     String label;
     Color color;
@@ -230,19 +252,15 @@ class QuizPage extends StatelessWidget {
       case QuestionDifficulty.tutorial:
         label = 'TUTORIAL';
         color = CatppuccinColors.lavender;
-        break;
       case QuestionDifficulty.easy:
         label = 'FÁCIL';
         color = CatppuccinColors.green;
-        break;
       case QuestionDifficulty.medium:
         label = 'MÉDIO';
         color = CatppuccinColors.yellow;
-        break;
       case QuestionDifficulty.hard:
         label = 'DIFÍCIL';
         color = CatppuccinColors.red;
-        break;
     }
 
     return Container(
@@ -263,7 +281,6 @@ class QuizPage extends StatelessWidget {
     );
   }
 
-  // Tela Inicial da Ada (Apresentação)
   Widget _buildAdaIntroView(BuildContext context, QuizViewModel viewModel) {
     return Scaffold(
       appBar: AppBar(title: const Text('CodeGrace - Módulo Inicial')),
@@ -334,11 +351,12 @@ class QuizPage extends StatelessWidget {
     );
   }
 
-  // Tela de Conclusão da Lição
   Widget _buildLessonCompletedView(
     BuildContext context,
     QuizViewModel viewModel,
   ) {
+    final totalAcumulado = viewModel.usuario?.pontuacao ?? viewModel.totalScore;
+
     return Scaffold(
       body: Center(
         child: Padding(
@@ -362,7 +380,8 @@ class QuizPage extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               const Text(
-                'Você deu o primeiro passo na sua jornada em Lógica de Programação com a Ada Lovelace!',
+                'Você deu o primeiro passo na sua jornada em Lógica de '
+                'Programação com a Ada Lovelace!',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: CatppuccinColors.subtext0),
               ),
@@ -373,15 +392,29 @@ class QuizPage extends StatelessWidget {
                   child: Column(
                     children: [
                       const Text(
-                        'Pontuação Total Conquistada',
+                        'Pontos desta Lição',
                         style: TextStyle(color: CatppuccinColors.subtext0),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 4),
                       Text(
-                        '${viewModel.totalScore} Pontos',
+                        '+${viewModel.totalScore} pts',
                         style: const TextStyle(
                           color: CatppuccinColors.yellow,
                           fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Divider(color: CatppuccinColors.surface1),
+                      const Text(
+                        'Total Acumulado',
+                        style: TextStyle(color: CatppuccinColors.subtext0),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '$totalAcumulado pts',
+                        style: const TextStyle(
+                          color: CatppuccinColors.mauve,
+                          fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -396,6 +429,15 @@ class QuizPage extends StatelessWidget {
                   onPressed: () => viewModel.resetLesson(),
                   icon: const Icon(Icons.refresh),
                   label: const Text('Refazer Lição'),
+                ),
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.map_outlined),
+                  label: const Text('Voltar à Trilha'),
                 ),
               ),
             ],
