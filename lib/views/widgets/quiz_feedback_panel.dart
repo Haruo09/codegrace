@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../../models/quiz_question.dart';
+import '../../models/questao_model.dart';
 import '../../theme/catppuccin_theme.dart';
 import '../../viewmodels/quiz_viewmodel.dart';
 
-/// Painel inferior fixo estilo Duolingo que sobe imediatamente ao responder a questão.
-/// Exibe indicador de acerto/erro, texto explicativo da Ada Lovelace com ótima legibilidade
-/// e botão "Continuar" para avançar à próxima pergunta.
+/// Painel inferior fixo estilo Duolingo que sobe imediatamente ao responder a
+/// questão. Exibe indicador de acerto/erro, texto explicativo e botão
+/// "Continuar" para avançar à próxima pergunta.
 class QuizFeedbackPanel extends StatelessWidget {
   final QuizViewModel viewModel;
-  final QuizQuestion question;
+  final QuestaoModel question;
 
   const QuizFeedbackPanel({
     super.key,
@@ -99,7 +99,7 @@ class QuizFeedbackPanel extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
 
-                  // Explicação detalhada da Ada Lovelace
+                  // Resposta correta destacada
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
@@ -110,7 +110,7 @@ class QuizFeedbackPanel extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      question.explanation,
+                      'Resposta certa: ${question.alternativas[question.altCerta]}',
                       style: const TextStyle(
                         color: CatppuccinColors.text,
                         fontSize: 14.5,
