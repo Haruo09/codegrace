@@ -71,7 +71,7 @@ jobs:
         run: flutter build apk --release
 
       - name: Rename APK
-        run: mv build/app/outputs/flutter-apk/apk-release.apk build/app/outputs/flutter-apk/codegrace.apk
+        run: mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/codegrace.apk
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
